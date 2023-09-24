@@ -27,9 +27,9 @@ pipeline {
         stage('Complete'){
             steps{
                 echo 'Job Complete!'
-                sh apt update
-                sh apt install nodejs npm
-                sh npx mobbdev scan --repo https://github.com/mobb-demo/mobb-simple-java-example.git --scanner snyk --ref master
+                sh 'apt update'
+                sh 'apt install nodejs npm'
+                sh 'npx mobbdev scan --repo https://github.com/mobb-demo/mobb-simple-java-example.git --scanner snyk --ref master'
             }
         }
     }
