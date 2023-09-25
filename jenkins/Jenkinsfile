@@ -1,41 +1,19 @@
 pipeline {
     agent any
-    tools{
-        maven "Default-Maven"
-    }
+
     stages {
-        // stage('Build') {
-        //     steps {
-        //         sh 'mvn -B -DskipTests clean package'
-        //     }
-        // }
-        // stage('Test') {
-        //     steps {
-        //         sh 'mvn test'
-        //     }
-        //     post {
-        //         always {
-        //             junit 'target/surefire-reports/*.xml'
-        //         }
-        //     }
-        // }
-        // stage('Deliver') {
-        //     steps {
-        //         sh './jenkins/scripts/deliver.sh'
-        //     }
-        // }
+
         stage('Setup Node') {
             steps {
-                script {
-                    def nodeVersion = '18'
-                    sh "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash"
-                    sh '''
-                        export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-                        nvm install $nodeVersion
-                    '''
-                }
+                // Mimic the behavior of actions/setup-node@v3.6.0
+                sh '''
+                curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+                node --version
+                npm --version
+                '''
             }
+              
         }
         stage('Run Mobb on the findings and get fixes') {
             steps{
