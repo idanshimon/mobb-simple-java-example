@@ -8,9 +8,11 @@ pipeline {
         stage('Setup Node') {
             steps {
                 // Mimic the behavior of actions/setup-node@v3.6.0
+                
+                // curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+                // apt-get install -y nodejs
+                // node --version
                 sh '''
-                curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-                apt-get install -y nodejs
                 node --version
                 npm --version
                 '''
