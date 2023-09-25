@@ -21,10 +21,7 @@ pipeline {
         }
         stage('Run Mobb on the findings and get fixes') {
             steps{
-                // git clone https://github.com/mobb-dev/action.git mobb-action
-                // cd mobb-action
                 sh '''
-                npm install mobbdev
                 npx mobbdev scan --repo https://github.com/mobb-demo/mobb-simple-java-example.git --scanner snyk --ref master
                 '''
             }
