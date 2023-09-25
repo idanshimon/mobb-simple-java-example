@@ -22,7 +22,7 @@ pipeline {
         stage('Run Mobb on the findings and get fixes') {
             steps{
                 sh '''
-                npx mobbdev scan --repo https://github.com/mobb-demo/mobb-simple-java-example --scanner snyk --ref master
+                npx mobbdev scan --repo https://github.com/mobb-demo/mobb-simple-java-example --scanner snyk --ref master --ci
                 '''
             }
         }
