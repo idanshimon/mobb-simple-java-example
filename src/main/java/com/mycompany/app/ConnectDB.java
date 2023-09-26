@@ -1,21 +1,25 @@
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class DatabaseConnection {
+public class DatabaseServlet extends HttpServlet {
 
-    public static void main(String[] args) {
-        // Dummy values for demonstration purposes
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = "yourUsername";
         String password = "yourPassword";
-        // Assuming you have a method to get the "selectedDB" parameter
-        String selectedDB = getSelectedDB();
+        String selectedDB = request.getParameter("selectedDB");
 
         Connection conn = null;
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            String url = "jdbc:mysql://10.12.1.34/" + selectedDB; //XXX
+            String url = "jdbc:mysql://10.12.1.34/" + selectedDB;
             conn = DriverManager.getConnection(url, username, password);
             doUnitWork();
         } catch (ClassNotFoundException cnfe) {
@@ -42,13 +46,7 @@ public class DatabaseConnection {
         }
     }
 
-    // Dummy method for demonstration purposes
-    private static String getSelectedDB() {
-        return "sampleDB";
-    }
-
-    // Dummy method for demonstration purposes
-    private static void doUnitWork() {
+    private void doUnitWork() {
         // Your logic here
         System.out.println("Doing unit work...");
     }
