@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs "Node"
+        maven "Maven"
     }
     environment{
         MOBB_API_KEY = credentials('mobb-api-key')
