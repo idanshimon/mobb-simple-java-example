@@ -1,5 +1,8 @@
 import java.io.File;
 import java.util.Scanner;
+import java.io.IOException;
+
+import java.net.URI;
 
 public class DeleteFile {
     public static void main(String[] args) {
@@ -13,6 +16,7 @@ public class DeleteFile {
         // Check if the path starts with "/safe_dir/"
         if (path.startsWith("/safe_dir/")) {
             // Create a File object
+            ensurePathIsRelative(path);
             File file = new File(path);
 
             // Check if the file exists and is a file (not a directory)
@@ -32,5 +36,36 @@ public class DeleteFile {
 
         // Close the scanner
         scanner.close();
+    }
+
+    private static void ensurePathIsRelative(String path) {
+         ensurePathIsRelative(new File(path));
+    }
+
+
+    private static void ensurePathIsRelative(URI uri) {
+         ensurePathIsRelative(new File(uri));
+    }
+
+
+    private static void ensurePathIsRelative(File file) {
+         // Based on https://stackoverflow.com/questions/2375903/whats-the-best-way-to-defend-against-a-path-traversal-attack/34658355#34658355
+         String canonicalPath;
+         String absolutePath;
+    
+         if (file.isAbsolute()) {
+              throw new RuntimeException("Potential directory traversal attempt – absolute path not allowed");
+         }
+    
+         try {
+              canonicalPath = file.getCanonicalPath();
+              absolutePath = file.getAbsolutePath();
+         } catch (IOException e) {
+              throw new RuntimeException("Potential directory traversal attempt", e);
+         }
+    
+         if (!canonicalPath.startsWith(absolutePath) || !canonicalPath.equals(absolutePath)) {
+              throw new RuntimeException("Potential directory traversal attempt");
+         }
     }
 }
