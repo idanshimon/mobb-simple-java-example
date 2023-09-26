@@ -23,24 +23,16 @@ pipeline {
                     }
                 }
             }
+            stage('Run Mobb on the findings and get fixes') {
+                steps {
+                    sh 'npx mobbdev scan --repo https://github.com/idanshimon/mobb-simple-java-example --scanner snyk --ref master --ci --api-key ${MOBB_API_KEY}'
+                }
+            }    
             stage('Deliver') {
                 steps {
                    // sh './jenkins/scripts/deliver.sh'
                 }
             }
-        stage('Check Node') {
-            steps {
-                sh '''
-                node --version
-                npm --version
-                '''
-            }
-              
-        }
-        stage('Run Mobb on the findings and get fixes') {
-            steps{
-                sh 'npx mobbdev scan --repo https://github.com/idanshimon/mobb-simple-java-example --scanner snyk --ref master --ci --api-key ${MOBB_API_KEY}'
-            }
-        }
+
     }
 }
