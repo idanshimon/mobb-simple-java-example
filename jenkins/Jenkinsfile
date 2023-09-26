@@ -13,26 +13,25 @@ pipeline {
                     //sh 'mvn -B -DskipTests clean package'
                 }
             }
-            stage('Test') {
-                steps {
-                    //sh 'mvn test'
-                }
-                post {
-                    always {
-                       // junit 'target/surefire-reports/*.xml'
-                    }
+        stage('Test') {
+            steps {
+                //sh 'mvn test'
+            }
+            post {
+                always {
+                    // junit 'target/surefire-reports/*.xml'
                 }
             }
-            stage('Run Mobb on the findings and get fixes') {
-                steps {
-                    sh 'npx mobbdev scan --repo https://github.com/idanshimon/mobb-simple-java-example --scanner snyk --ref master --ci --api-key ${MOBB_API_KEY}'
-                }
-            }    
-            stage('Deliver') {
-                steps {
-                   // sh './jenkins/scripts/deliver.sh'
-                }
+        }
+        stage('Run Mobb on the findings and get fixes') {
+            steps {
+                sh 'npx mobbdev scan --repo https://github.com/idanshimon/mobb-simple-java-example --scanner snyk --ref master --ci --api-key ${MOBB_API_KEY}'
             }
-
+        }    
+        stage('Deliver') {
+            steps {
+                // sh './jenkins/scripts/deliver.sh'
+            }
+        }
     }
 }
