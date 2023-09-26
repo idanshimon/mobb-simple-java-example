@@ -10,8 +10,8 @@ public class DatabaseServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = "yourUsername";
-        String password = "yourPassword";
+        String username = System.getenv("DB_USERNAME"); /*n1*/
+        String password = System.getenv("DB_PASSWORD"); /*n2*/
         String selectedDB = request.getParameter("selectedDB");
 
         Connection conn = null;
