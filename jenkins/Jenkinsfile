@@ -11,9 +11,25 @@ pipeline {
         stage('Build') {
                 steps {
                     //sh 'mvn -B -DskipTests clean package'
+                    withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
+                        script {
+                            app = docker.build("idanohh/myjenkins")
+                        }
+                    }
                     echo "Building...Done"
                 }
             }
+        stage('Run Container Scan') {
+            steps {
+                withCredentials([string(credentialsId: 'SNYK_TOKEN',variable:'SNYK_TOKEN')]){
+                    script{
+                        try{
+                            sh 'snyk container test idanohh/myjenkins'
+                        }
+                    }
+                }
+            }
+        } 
         stage('Test') {
             steps {
                 //sh 'mvn test'
@@ -27,6 +43,7 @@ pipeline {
                 }
             }
         }
+   
         stage('Run Mobb on the findings and get fixes') {
             steps {
                 sh 'npx mobbdev scan --repo https://github.com/idanshimon/mobb-simple-java-example --scanner snyk --ref master --ci --api-key ${MOBB_API_KEY}'
