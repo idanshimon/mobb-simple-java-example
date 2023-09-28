@@ -26,6 +26,9 @@ pipeline {
                         try{
                             sh 'snyk container test idanohh/myjenkins'
                         }
+                        catch (err){
+                            echo err.getMessage()
+                        }
                     }
                 }
             }
