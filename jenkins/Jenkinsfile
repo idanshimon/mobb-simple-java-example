@@ -24,7 +24,7 @@ pipeline {
         stage('Run Snyk Container Scan') {
             steps {
                     snykSecurity(
-                        snykInstallation: 'snyk@latest',
+                        snykInstallation: 'SnykLatest',
                         snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
                         additionalArguments: '--container idanohh/myjenkins'
