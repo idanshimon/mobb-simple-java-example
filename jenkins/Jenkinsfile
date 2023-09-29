@@ -13,7 +13,8 @@ pipeline {
                     //sh 'mvn -B -DskipTests clean package'
                     withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
                        script {
-                           app = docker.build("idanohh/myjenkins")
+                           app = docker.image("idanohh/myjenkins")
+                           app.build()
                         }
                    }
                     echo "Building...Done"
