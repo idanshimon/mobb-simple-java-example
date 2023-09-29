@@ -3,9 +3,11 @@ pipeline {
     tools {
         nodejs "Node"
         maven "Maven"
+        snyk "Snyk"
     }
     environment{
         MOBB_API_KEY = credentials('mobb-api-key')
+        SNYK_TOKEN = credentials('SNYK_TOKEN')
     }
     stages {
         stage('Build') {
