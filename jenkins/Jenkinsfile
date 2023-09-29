@@ -18,6 +18,7 @@ pipeline {
                    //         dockerImage = docker.build("idanohh/myjenkins:firstrepo")
                    //      }
                    // }
+                    sh 'snyk version'
                     echo "Building...Done"
                 }
             }
