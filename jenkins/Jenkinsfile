@@ -3,7 +3,7 @@ pipeline {
     tools {
         nodejs "Node"
         maven "Maven"
-        snyk "MySnyk"
+        snyk "SnykLatest"
     }
     environment{
         MOBB_API_KEY = credentials('mobb-api-key')
