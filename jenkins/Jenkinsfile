@@ -38,7 +38,7 @@ pipeline {
                         snykInstallation: 'snyk@latest',
                         snykTokenId: 'snyk-api-key',
                         failOnIssues: false,
-                        additionalArguments: '-all-projects --d'
+                        additionalArguments: '-all-projects -d'
                         }
                 
                 withCredentials([string(credentialsId: 'SNYK_TOKEN',variable:'SNYK_TOKEN')]){
