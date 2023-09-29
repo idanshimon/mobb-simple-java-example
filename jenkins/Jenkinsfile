@@ -3,7 +3,6 @@ pipeline {
     tools {
         nodejs "Node"
         maven "Maven"
-        snyk "SnykLatest"
     }
     environment{
         MOBB_API_KEY = credentials('mobb-api-key')
@@ -24,7 +23,7 @@ pipeline {
         stage('Run Snyk Container Scan') {
             steps {
                     snykSecurity(
-                        snykInstallation: 'SnykLatest',
+                        snykInstallation: 'snyk@latest',
                         snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
                         additionalArguments: '--container idanohh/myjenkins'
