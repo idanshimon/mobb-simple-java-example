@@ -11,14 +11,13 @@ pipeline {
     stages {
         stage('Build') {
                 steps {
-                    //sh 'mvn -B -DskipTests clean package'
-                    withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
-                        sh 'docker build -t idanohh/myjenkins:firstrepo .'
-
-                       // script {
-                       //     // dockerImage = docker.build("idanohh/myjenkins:firstrepo")
-                       //  }
-                   }
+                   //  //sh 'mvn -B -DskipTests clean package'
+                   //  withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
+                   //      // sh 'docker build -t idanohh/myjenkins:firstrepo .'
+                   //     script {
+                   //         dockerImage = docker.build("idanohh/myjenkins:firstrepo")
+                   //      }
+                   // }
                     echo "Building...Done"
                 }
             }
@@ -29,7 +28,7 @@ pipeline {
                         snykInstallation: 'snyk@latest',
                         snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
-                        additionalArguments: 'container test idanohh/myjenkins'
+                        additionalArguments: 'container test idanohh/myjenkins:firstrepo'
                         )
                     }
         }
