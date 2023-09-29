@@ -37,7 +37,7 @@ pipeline {
             steps {
                     snykSecurity(
                         snykInstallation: 'snyk@latest',
-                        snykTokenId: 'snyk-api-key',
+                        snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
                         additionalArguments: '-all-projects -d'
                         )
