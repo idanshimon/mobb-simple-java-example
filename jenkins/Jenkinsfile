@@ -26,7 +26,7 @@ pipeline {
             steps {
                     snykSecurity(
                         snykInstallation: 'snyk@latest',
-                        snykTokenId: 'organisation-snyk-token',
+                        snykTokenId: 'snyk-token-id',
                         failOnIssues: false,
                         additionalArguments: '--container idanohh/myjenkins:firstrepo'
                         )
@@ -37,7 +37,7 @@ pipeline {
             steps {
                     snykSecurity(
                         snykInstallation: 'snyk@latest',
-                        snykTokenId: 'organisation-snyk-token',
+                        snykTokenId: 'snyk-token-id',
                         failOnIssues: false,
                         additionalArguments: '-all-projects -d'
                         )
