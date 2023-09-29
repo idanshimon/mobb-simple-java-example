@@ -7,7 +7,6 @@ pipeline {
     }
     environment{
         MOBB_API_KEY = credentials('mobb-api-key')
-        SNYK_TOKEN = credentials('snyk-api-key')
     }
     stages {
         stage('Build') {
@@ -26,7 +25,7 @@ pipeline {
             steps {
                     snykSecurity(
                         snykInstallation: 'snyk@latest',
-                        snykTokenId: 'snyk-api-key',
+                        snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
                         additionalArguments: '--container idanohh/myjenkins'
                         )
