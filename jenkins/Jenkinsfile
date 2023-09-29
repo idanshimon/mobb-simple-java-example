@@ -27,7 +27,7 @@ pipeline {
                         snykInstallation: 'snyk@latest',
                         snykTokenId: 'organisation-snyk-token',
                         failOnIssues: false,
-                        additionalArguments: '--container idanohh/myjenkins'
+                        additionalArguments: container test idanohh/myjenkins'
                         )
                     }
         }
