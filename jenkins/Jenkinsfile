@@ -13,11 +13,11 @@ pipeline {
         stage('Build') {
                 steps {
                     //sh 'mvn -B -DskipTests clean package'
-                    withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
-                        script {
-                            app = docker.build("idanohh/myjenkins")
-                        }
-                    }
+                    //withDockerRegistry([credentialsId: "dockerhublogin", url: ""]){
+                   //     script {
+                   //        app = docker.build("idanohh/myjenkins")
+                  //      }
+                //   }
                     echo "Building...Done"
                 }
             }
