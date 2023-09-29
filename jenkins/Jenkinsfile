@@ -21,8 +21,26 @@ pipeline {
                     echo "Building...Done"
                 }
             }
+        stage('Run Snyk Container Scan') {
+            steps {
+                    snykSecurity(
+                        snykInstallation: 'snyk@latest',
+                        snykTokenId: 'snyk-api-key',
+                        failOnIssues: false,
+                        additionalArguments: '--container idanohh/myjenkins'
+                        )
+                    }
+        }
+             
         stage('Run Container Scan') {
             steps {
+                    snykSecurity(
+                        snykInstallation: 'snyk@latest',
+                        snykTokenId: 'snyk-api-key',
+                        failOnIssues: false,
+                        additionalArguments: '-all-projects --d'
+                        }
+                
                 withCredentials([string(credentialsId: 'SNYK_TOKEN',variable:'SNYK_TOKEN')]){
                     script{
                         try{
