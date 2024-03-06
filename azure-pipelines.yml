@@ -1,0 +1,34 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo "Starting vulnerability scan with Aqua ScannerCLI"
+  displayName: 'Echo Start Message'
+
+- script: |
+    docker login -u $(Aqua_User) -p $(Aqua_PW) $(Aqua_Registry)
+    docker pull $(Vulnerable_Image)
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(Build.SourcesDirectory)/AquaSecurityResults:/reports $(Scanner_Image) scan -H $(Aqua_Environment_URL) -U $(Aqua_User) -P $(Aqua_PW) --image $(Vulnerable_Image) --htmlfile /reports/AquaSecurity.html --jsonfile /reports/AquaSecurity.json
+    docker logout $(Aqua_Registry)
+  displayName: 'Aqua ScannerCLI Scan'
+  continueOnError: false
+
+- script: |
+    if [ -s $(Build.SourcesDirectory)/AquaSecurityResults/AquaSecurity.json ]; then
+      echo "##vso[task.logissue type=error]Vulnerabilities found, failing the build."
+      exit 1
+    else
+      echo "No vulnerabilities found."
+    fi
+  displayName: 'Fail Build on Vulnerabilities'
+  continueOnError: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/AquaSecurityResults'
+    ArtifactName: 'AquaSecurityResults'
+    publishLocation: 'Container'
+  displayName: 'Publish Security Scan Reports'
