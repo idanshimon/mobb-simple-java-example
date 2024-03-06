@@ -9,6 +9,7 @@ variables:
 
 steps:
 - script: |
+    mkdir -p $(Build.ArtifactStagingDirectory)/Aqua
     echo "Downloading Aqua ScannerCLI executable binary..."
     wget -O scannercli https://download.aquasec.com/scanner/2022.4/scannercli --user=$(Aqua_User) --password=$(Aqua_PW)
     chmod +x scannercli
