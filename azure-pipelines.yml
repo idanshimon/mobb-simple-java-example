@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  SCAN_EXIT_CODE: 0
+
 steps:
 - script: |
     echo "Downloading Aqua ScannerCLI executable binary..."
@@ -17,6 +20,7 @@ steps:
     ./scannercli scan -H $(Aqua_Environment_URL) -U $(Env_User) -P $(Env_PW) --code-scan $(Build.SourcesDirectory) --html --htmlfile $(Build.SourcesDirectory)/AquaSecurity.html --jsonfile $(Build.SourcesDirectory)/AquaSecurity.json
     exitCode=$?
     echo "Scan command exit code: $exitCode"
+    echo "##vso[task.setvariable variable=SCAN_EXIT_CODE]$exitCode"
     echo "Scan completed."
     exit $exitCode
   displayName: 'Scan Image with Aqua ScannerCLI'
@@ -29,3 +33,9 @@ steps:
     publishLocation: 'Container'
   condition: succeededOrFailed()
   displayName: 'Publish Security Scan Reports'
+
+- script: |
+    if [ $(SCAN_EXIT_CODE) -ne 0]; then
+      echo "Aqua Scan failed with vulnerabilities."
+      exit $(SCAN_EXIT_CODE)
+  displayName: 'Fail Build If Aqua Scan Failed'
