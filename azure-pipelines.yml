@@ -17,7 +17,7 @@ steps:
 
 - script: |
     echo "Scanning the image..."
-    ./scannercli scan -H $(Aqua_Environment_URL) -U $(Env_User) -P $(Env_PW) --code-scan $(Build.SourcesDirectory) --htmlfile $(Build.ArtifactStagingDirectory)/AquaSecurity.html --jsonfile $(Build.ArtifactStagingDirectory)/AquaSecurity.json
+    ./scannercli scan -H $(Aqua_Environment_URL) -U $(Env_User) -P $(Env_PW) --code-scan $(Build.SourcesDirectory) --htmlfile $(Build.ArtifactStagingDirectory)/Aqua/AquaSecurity.html --jsonfile $(Build.ArtifactStagingDirectory)/Aqua/AquaSecurity.json
     exitCode=$?
     echo "Scan command exit code: $exitCode"
     echo "##vso[task.setvariable variable=SCAN_EXIT_CODE]$exitCode"
@@ -28,14 +28,14 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Aqua'
     ArtifactName: 'AquaSecurityResults'
     publishLocation: 'Container'
   condition: succeededOrFailed()
   displayName: 'Publish Security Scan Reports'
 
 - script: |
-    if [ $(SCAN_EXIT_CODE) -ne 0]; then
+    if [ $(SCAN_EXIT_CODE) -ne 0 ]; then
       echo "Aqua Scan failed with vulnerabilities."
       exit $(SCAN_EXIT_CODE)
     fi
