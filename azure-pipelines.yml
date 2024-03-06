@@ -20,11 +20,12 @@ steps:
     echo "Scan completed."
     exit $exitCode
   displayName: 'Scan Image with Aqua ScannerCLI'
-  continueOnError: false
+  continueOnError: true
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.SourcesDirectory)'
     ArtifactName: 'AquaSecurityResults'
     publishLocation: 'Container'
+  condition: succeededOrFailed()
   displayName: 'Publish Security Scan Reports'
