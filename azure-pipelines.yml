@@ -18,6 +18,7 @@ steps:
     exitCode=$?
     echo "Scan command exit code: $exitCode"
     echo "Scan completed."
+    exit $exitCode
   displayName: 'Scan Image with Aqua ScannerCLI'
   continueOnError: false
 
