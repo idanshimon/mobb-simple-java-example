@@ -15,6 +15,8 @@ steps:
 - script: |
     echo "Scanning the image..."
     ./scannercli scan -H $(Aqua_Environment_URL) -U $(Env_User) -P $(Env_PW) --code-scan $(Build.SourcesDirectory) --html --htmlfile $(Build.SourcesDirectory)/AquaSecurity.html --jsonfile $(Build.SourcesDirectory)/AquaSecurity.json
+    exitCode=$?
+    echo "Scan command exit code: $exitCode"
     echo "Scan completed."
   displayName: 'Scan Image with Aqua ScannerCLI'
   continueOnError: false
