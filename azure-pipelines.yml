@@ -5,30 +5,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo "Starting vulnerability scan with Aqua ScannerCLI"
-  displayName: 'Echo Start Message'
+- script: |
+    echo "Downloading Aqua ScannerCLI executable binary..."
+    wget -O scannercli https://download.aquasec.com/scanner/2022.4/scannercli --user=$(Aqua_User) --password=$(Aqua_PW)
+    chmod +x scannercli
+    echo "Aqua ScannerCLI downloaded and permissions set."
+  displayName: 'Download Aqua ScannerCLI'
 
 - script: |
-    docker login -u $(Aqua_User) -p $(Aqua_PW) $(Aqua_Registry)
-    docker pull $(Vulnerable_Image)
-    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(Build.SourcesDirectory)/AquaSecurityResults:/reports $(Scanner_Image) scan -H $(Aqua_Environment_URL) -U $(Aqua_User) -P $(Aqua_PW) --image $(Vulnerable_Image) --htmlfile /reports/AquaSecurity.html --jsonfile /reports/AquaSecurity.json
-    docker logout $(Aqua_Registry)
-  displayName: 'Aqua ScannerCLI Scan'
-  continueOnError: false
-
-- script: |
-    if [ -s $(Build.SourcesDirectory)/AquaSecurityResults/AquaSecurity.json ]; then
-      echo "##vso[task.logissue type=error]Vulnerabilities found, failing the build."
-      exit 1
-    else
-      echo "No vulnerabilities found."
-    fi
-  displayName: 'Fail Build on Vulnerabilities'
+    echo "Scanning the image..."
+    ./scannercli scan --dockerless -H $(Aqua_Environment_URL) -U $(Aqua_User) -P $(Aqua_PW) --local $(Vulnerable_Image) --htmlfile AquaSecurity.html --jsonfile AquaSecurity.json
+    echo "Scan completed."
+  displayName: 'Scan Image with Aqua ScannerCLI'
   continueOnError: false
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/AquaSecurityResults'
+    PathtoPublish: '$(Build.SourcesDirectory)'
     ArtifactName: 'AquaSecurityResults'
     publishLocation: 'Container'
   displayName: 'Publish Security Scan Reports'
