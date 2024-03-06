@@ -38,4 +38,5 @@ steps:
     if [ $(SCAN_EXIT_CODE) -ne 0]; then
       echo "Aqua Scan failed with vulnerabilities."
       exit $(SCAN_EXIT_CODE)
+    fi
   displayName: 'Fail Build If Aqua Scan Failed'
